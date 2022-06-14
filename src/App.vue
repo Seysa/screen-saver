@@ -52,7 +52,8 @@ function toHour(date: Date | number, seconds?: boolean): string {
 }
 
 async function updateWeather() {
-  const data = JSON.parse(await queryMeteo());
+  const data = await queryMeteo();
+  console.log(data);
   const roundedTemp = Math.round(data.current.temp);
   temp.value = roundedTemp;
   humidity.value = data.current.humidity;
