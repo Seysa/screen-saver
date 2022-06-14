@@ -9,15 +9,17 @@
       {{ buttonText }}
     </button>
     <TheTimer />
-    <TheMeteo :hidden="hidden" />
+    <TheWeather :hidden="hidden" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import TheTimer from "./components/TheTimer.vue";
-import TheMeteo from "./components/TheMeteo.vue";
+import TheWeather from "./components/TheWeather.vue";
 
 const hidden = ref(false);
-const buttonText = computed(() => (!hidden.value ? "Hide" : "Show") + " meteo");
+const buttonText = computed(
+  () => (!hidden.value ? "Hide" : "Show") + " weather"
+);
 </script>

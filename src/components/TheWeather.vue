@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from "vue";
-import { queryMeteo } from "../meteo";
+import { queryWeather } from "../weather";
 import { toHour } from "../time";
 
 defineProps<{
@@ -34,8 +34,8 @@ const sunriseHour = computed(() => toHour(sunrise.value));
 const sunsetHour = computed(() => toHour(sunset.value));
 
 async function updateWeather() {
-  console.info("query meteo...");
-  const data = await queryMeteo();
+  console.info("query weather...");
+  const data = await queryWeather();
   console.log(data);
   const roundedTemp = Math.round(data.current.temp);
   temp.value = roundedTemp;
