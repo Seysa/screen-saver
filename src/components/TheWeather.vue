@@ -1,24 +1,25 @@
 <template>
-  <h2
+  <div
     id="meteo"
     class="flex flex-col text-black transition-all duration-1000"
     :class="{
       'text-gray-300': hasData && !hidden,
     }"
   >
-    <span id="temp">{{ temp }}°C</span>
-    <span id="humidity">{{ humidity }}% humidity</span>
+    <span id="state">{{ dayOrNight }}</span>
+    <span id="temp">{{ roundedTemp }}°C</span>
+    <span id="humidity">{{ data?.current?.humidity }}% humidity</span>
     <div>
       <span id="sunrise">{{ sunriseHour }}</span>
       <span class="mx-2">→</span>
       <span id="sunset">{{ sunsetHour }}</span>
     </div>
-  </h2>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import { queryWeather } from "../weather";
+import { computed, Ref, ref } from "vue";
+import { queryWeather, WeatherApiResponse } from "../weather";
 import { toHour } from "../time";
 
 defineProps<{
@@ -26,22 +27,31 @@ defineProps<{
 }>();
 
 const hasData = ref(false);
-const temp = ref(0);
-const humidity = ref(0);
 const sunrise = ref(0);
 const sunset = ref(0);
+
+const dayOrNight = computed(() => {
+  const now = new Date();
+  const sunriseTime = new Date(sunrise.value);
+  const sunsetTime = new Date(sunset.value);
+  if (now < sunriseTime) {
+    return "night";
+  } else if (now < sunsetTime) {
+    return "day";
+  } else {
+    return "night";
+  }
+});
+const roundedTemp = computed(() => Math.round(data?.value?.current.temp ?? 0));
 const sunriseHour = computed(() => toHour(sunrise.value));
 const sunsetHour = computed(() => toHour(sunset.value));
 
+const data: Ref<WeatherApiResponse | null> = ref(null);
+
 async function updateWeather() {
-  console.info("query weather...");
-  const data = await queryWeather();
-  console.log(data);
-  const roundedTemp = Math.round(data.current.temp);
-  temp.value = roundedTemp;
-  humidity.value = data.current.humidity;
-  sunrise.value = data.current.sunrise * 1000;
-  sunset.value = data.current.sunset * 1000;
+  data.value = await queryWeather();
+  sunrise.value = data.value.current.sunrise * 1000;
+  sunset.value = data.value.current.sunset * 1000;
   hasData.value = true;
 }
 
