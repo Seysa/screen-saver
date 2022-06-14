@@ -22,10 +22,10 @@ import { queryMeteo } from "../meteo";
 import { toHour } from "../time";
 
 const hasData = ref(false);
-const temp = ref(-99);
-const humidity = ref(-99);
-const sunrise = ref(-99);
-const sunset = ref(-99);
+const temp = ref(0);
+const humidity = ref(0);
+const sunrise = ref(0);
+const sunset = ref(0);
 const sunriseHour = computed(() => toHour(sunrise.value));
 const sunsetHour = computed(() => toHour(sunset.value));
 
