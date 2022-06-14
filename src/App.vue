@@ -4,12 +4,12 @@
   >
     <button
       @click="hidden = !hidden"
-      class="px-4 py-2 text-black hover:text-white border-2 border-black hover:border-white rounded transition-all duration-500"
+      class="px-4 py-2 text-black hover:text-white border border-black hover:border-white rounded transition-all duration-500"
     >
       {{ buttonText }}
     </button>
     <TheTimer />
-    <TheMeteo v-show="!hidden" />
+    <TheMeteo :hidden="hidden" />
   </div>
 </template>
 
@@ -19,5 +19,5 @@ import TheTimer from "./components/TheTimer.vue";
 import TheMeteo from "./components/TheMeteo.vue";
 
 const hidden = ref(false);
-const buttonText = computed(() => (!hidden.value ? "Hide" : "Show"));
+const buttonText = computed(() => (!hidden.value ? "Hide" : "Show") + " meteo");
 </script>

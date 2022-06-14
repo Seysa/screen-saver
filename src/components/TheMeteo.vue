@@ -3,7 +3,7 @@
     id="meteo"
     class="flex flex-col text-black transition-all duration-1000"
     :class="{
-      'text-gray-300': hasData,
+      'text-gray-300': hasData && !hidden,
     }"
   >
     <span id="temp">{{ temp }}°C</span>
@@ -20,6 +20,10 @@
 import { computed, ref } from "vue";
 import { queryMeteo } from "../meteo";
 import { toHour } from "../time";
+
+defineProps<{
+  hidden: boolean;
+}>();
 
 const hasData = ref(false);
 const temp = ref(0);
