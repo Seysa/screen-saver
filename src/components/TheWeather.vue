@@ -6,7 +6,7 @@
       'text-gray-300': hasData && !hidden,
     }"
   >
-    <span id="temp">{{ roundedTemp }}°C</span>
+    <span id="temp" class="text-xl">{{ roundedTemp }}°C</span>
     <span id="humidity">{{ data?.current?.humidity }}% humidity</span>
     <div>
       <span id="sunrise">{{ sunriseHour }}</span>
