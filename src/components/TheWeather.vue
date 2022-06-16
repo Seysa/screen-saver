@@ -6,7 +6,6 @@
       'text-gray-300': hasData && !hidden,
     }"
   >
-    <span id="state">{{ dayOrNight }}</span>
     <span id="temp">{{ roundedTemp }}°C</span>
     <span id="humidity">{{ data?.current?.humidity }}% humidity</span>
     <div>
@@ -30,18 +29,6 @@ const hasData = ref(false);
 const sunrise = ref(0);
 const sunset = ref(0);
 
-const dayOrNight = computed(() => {
-  const now = new Date();
-  const sunriseTime = new Date(sunrise.value);
-  const sunsetTime = new Date(sunset.value);
-  if (now < sunriseTime) {
-    return "night";
-  } else if (now < sunsetTime) {
-    return "day";
-  } else {
-    return "night";
-  }
-});
 const roundedTemp = computed(() => Math.round(data?.value?.current.temp ?? 0));
 const sunriseHour = computed(() => toHour(sunrise.value));
 const sunsetHour = computed(() => toHour(sunset.value));
