@@ -17,12 +17,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, Ref, ref } from "vue";
+import { computed, Ref, ref, watch } from "vue";
 import { queryWeather, WeatherApiResponse } from "../weather";
 import { toHour } from "../time";
 
-defineProps<{
+const props = defineProps<{
   hidden: boolean;
+  position?: {
+    latitude: number;
+    longitude: number;
+  };
 }>();
 
 const hasData = ref(false);
@@ -36,7 +40,7 @@ const sunsetHour = computed(() => toHour(sunset.value));
 const data: Ref<WeatherApiResponse | null> = ref(null);
 
 async function updateWeather() {
-  data.value = await queryWeather();
+  data.value = await queryWeather(props.position);
   sunrise.value = data.value.current.sunrise * 1000;
   sunset.value = data.value.current.sunset * 1000;
   hasData.value = true;
