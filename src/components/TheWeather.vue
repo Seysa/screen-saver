@@ -42,6 +42,7 @@
           class="w-6 h-6"
         />
         <span>{{ day.temp }}°</span>
+        <span class="text-[0.8em] text-gray-400">{{ day.min }}°</span>
       </div>
     </template>
   </div>
@@ -105,6 +106,7 @@ const weekForecast = computed(() => {
     return {
       day: date.toLocaleDateString("en-US", { weekday: "short" }),
       temp: Math.round(d.temp.day),
+      min: Math.round(d.temp.min),
       icon: d.weather?.[0]?.icon ?? "01d",
       isToday:
         date.getDate() === today.getDate() &&
