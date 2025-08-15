@@ -21,6 +21,30 @@
       </span>
     </div>
   </div>
+  <div
+    id="week-forecast"
+    class="flex gap-2 mt-2 opacity-0 transition-all duration-1000"
+    :class="{
+      'opacity-100': hasData && !hidden,
+    }"
+  >
+    <template v-for="(day, i) in weekForecast" :key="i">
+      <div
+        class="flex flex-col items-center text-xs px-1 rounded transition-all"
+        :class="{
+          'bg-white bg-opacity-10 text-white font-extrabold': day.isToday
+        }"
+      >
+        <span>{{ day.day }}</span>
+        <img
+          :src="`https://openweathermap.org/img/wn/${day.icon}@2x.png`"
+          alt="icon"
+          class="w-6 h-6"
+        />
+        <span>{{ day.temp }}°</span>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -72,4 +96,21 @@ watch(
   { immediate: true }
 );
 setInterval(updateWeather, 1000 * 60 * 2); // 2 minutes
+
+const weekForecast = computed(() => {
+  if (!data.value?.daily) return [];
+  const today = new Date();
+  return data.value.daily.slice(0, 7).map((d: any) => {
+    const date = new Date(d.dt * 1000);
+    return {
+      day: date.toLocaleDateString("en-US", { weekday: "short" }),
+      temp: Math.round(d.temp.day),
+      icon: d.weather?.[0]?.icon ?? "01d",
+      isToday:
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear(),
+    };
+  });
+});
 </script>
