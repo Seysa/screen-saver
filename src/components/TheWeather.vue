@@ -1,9 +1,9 @@
 <template>
   <div
     id="meteo"
-    class="flex flex-col text-black transition-all duration-1000"
+    class="flex flex-col transition-all duration-1000 text-gray-300 opacity-0"
     :class="{
-      'text-gray-300': hasData && !hidden,
+      'opacity-100': hasData && !hidden,
     }"
   >
     <span id="temp" class="text-xl">{{ roundedTemp }}°C</span>
