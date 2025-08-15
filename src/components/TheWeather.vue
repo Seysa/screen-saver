@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, Ref, ref } from "vue";
+import { computed, Ref, ref, watch } from "vue";
 import { queryWeather, WeatherApiResponse } from "../weather";
 import { toHour } from "../time";
 
@@ -59,5 +59,14 @@ async function updateWeather() {
 }
 
 updateWeather();
+watch(
+  () => props.position,
+  (newPosition) => {
+    if (newPosition) {
+      updateWeather();
+    }
+  },
+  { immediate: true }
+);
 setInterval(updateWeather, 1000 * 60 * 2); // 2 minutes
 </script>

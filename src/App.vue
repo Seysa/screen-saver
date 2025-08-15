@@ -42,6 +42,8 @@ function calibrateGPS() {
     );
   }
 }
+
+calibrateGPS(); // Initial call to set position
 </script>
 
 <style scoped>
