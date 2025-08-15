@@ -13,7 +13,10 @@
       <span class="mx-2">→</span>
       <span id="sunset">{{ sunsetHour }}</span>
       <span id="wind" class="flex items-center">
-        <img src="../icons/arrow_upward.svg" :style="{transform: windIconRotation}" />
+        <img
+          src="../icons/arrow_upward.svg"
+          :style="{ transform: windIconRotation }"
+        />
         {{ windSpeed }}
       </span>
     </div>
@@ -33,7 +36,6 @@ const props = defineProps<{
   };
 }>();
 
-
 const roundedTemp = computed(() => Math.round(data?.value?.current.temp ?? 0));
 const sunriseHour = computed(() => toHour(sunrise.value));
 const sunsetHour = computed(() => toHour(sunset.value));
@@ -49,7 +51,8 @@ const windSpeed = computed(() => {
 // compute icon that is rotated based on wind direction
 const windIconRotation = computed(() => {
   const direction = data.value?.current.wind_deg ?? 0;
-  return `rotate(${direction}deg)`;
+  // + 180 because the icon points up and we want it to point in the direction of the wind, which is opposite to the arrow
+  return `rotate(${(direction + 180) % 360}deg)`;
 });
 
 const data: Ref<WeatherApiResponse | null> = ref(null);
