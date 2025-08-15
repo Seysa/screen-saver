@@ -11,12 +11,13 @@
       <button @click="calibrateGPS">Calibrate GPS</button>
     </div>
     <TheTimer />
+
     <TheWeather :hidden="hidden" :position="position" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import TheTimer from "./components/TheTimer.vue";
 import TheWeather from "./components/TheWeather.vue";
 
@@ -29,11 +30,22 @@ const position = ref<undefined | { latitude: number; longitude: number }>(
   undefined
 );
 
+const params = new URLSearchParams(window.location.search);
+const lat = params.get("lat") ?? params.get("latitude");
+const long = params.get("lon") ?? params.get("long") ?? params.get("longitude");
+if (lat && long && !isNaN(Number(lat)) && !isNaN(Number(long))) {
+  position.value = {
+    latitude: Number(lat),
+    longitude: Number(long),
+  };
+}
+
+console.log("lat long from params", JSON.stringify(position.value));
+
 function calibrateGPS() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (_position) => {
-        console.log(_position);
         position.value = _position.coords;
       },
       (error) => {
@@ -42,7 +54,6 @@ function calibrateGPS() {
     );
   }
 }
-
 </script>
 
 <style scoped>
